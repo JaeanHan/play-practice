@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import db.DBConnectionMgr;
 import lombok.RequiredArgsConstructor;
 import userData.User;
@@ -51,7 +51,41 @@ public class UserDao {
 		return result;
 	}
 	
-	public int updateAddress(String username, String address) {
+	public void updateInfo(String username, Scanner sc) {
+		while(true) {
+			System.out.print("변경하고 싶은 정보의 번호를 입력해주세요: ");
+			System.out.println("[1. Address]");
+			System.out.println("[2. Preference]");
+			System.out.println("[3. Contact]");
+			System.out.println("[0. quit]");
+			
+			try { // consider typo
+				int num = sc.nextInt(); 
+				sc.nextLine();
+				
+				if (num==1) {
+					System.out.print("변경하실 주소를 입력해 주세요: ");
+					updateAddress(username, sc.nextLine());
+				} else if (num==2) {
+					System.out.println("가장 좋아하는 메뉴를 입력해주세요!: ");
+					updatePreference(username, sc.nextLine());
+				} else if (num==3) {
+					System.out.println("바뀐 연락처를 입력해주세요: ");
+					updatePhone(username, sc.nextLine());
+				} else if (num==0) {
+					System.out.println("정보 변경을 종료합니다.");
+					break;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("오타에 주의하세요.");
+			} finally {
+				System.out.println("[바뀐 정보입니다!]");
+				printInfoPrettier(username);
+			}
+		}
+	}
+	
+	private int updateAddress(String username, String address) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -87,7 +121,7 @@ public class UserDao {
 		return result;
 	}
 
-	public int updatePhone(String username, String phone) {
+	private int updatePhone(String username, String phone) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -123,7 +157,7 @@ public class UserDao {
 		return result;
 	}
 
-	public int updatePreference(String username, String menu) {
+	private int updatePreference(String username, String menu) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -163,6 +197,7 @@ public class UserDao {
 		
 	}
 
+	
 	private HashMap<String, User> getUserByUsername(String username) {
 		String sql = null;
 		Connection con = null;
@@ -205,6 +240,7 @@ public class UserDao {
 				
 			} catch (SQLException e) {
 				System.out.println("getUserByUsername SQL Error");
+				System.out.println("존재하지 않는 유저네임입니다.");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -221,7 +257,7 @@ public class UserDao {
 		System.out.println(printable.get("ud"));
 	}
 
-	public int deleteInfoByUsername(String username) {
+	public int deleteByUsername(String username) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -304,32 +340,73 @@ public class UserDao {
 	public void printUserAll() {
 		HashMap<String, User> userList = getUserAll();
 				
-		for(int i=0; i<userList.size()/2; i++) { //um, ud 묶어서 출력, 여전히 무작위
+		for(int i=0; i<userList.size()/2; i++) { // still, but at least  um and ud groupped
 			System.out.println(userList.get("um"+i));
 			System.out.println(userList.get("ud"+i));
 			System.out.println();
 		}
 		
-//		for(String temp : userList.keySet()) { 무작위 선택
+//		for(String temp : userList.keySet()) { I don't like randomness
 //			System.out.println(userList.get(temp));
 //		}
 		
 	}
 
-	public int signIn() {
+	public HashMap<String, User> SignIn(String username, String password) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		int result = 0;
+		ResultSet rs = null;
+		HashMap<String, User> userMap = new HashMap<>();
 		
 		try {
 			con = pool.getConnection();
-			sql = "";
-			//로그인
+			sql = "SELECT\r\n"
+					+ "	*\r\n"
+					+ "FROM user_mst um INNER JOIN user_dtl ud ON(um.usercode = ud.usercode)\r\n"
+					+ "WHERE um.username = ? AND um.password = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, username);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			/*
+			 * if(CheckIfRight) {
+			 *     userMap = getUserByUsername(username);
+			 * } else {
+			 *     System.out.println("incorrect!");
+			 *     return null;
+			 * }
+			 */
+			
+			UserMst temp = UserMst.builder()
+									.usercode(rs.getInt(1))
+									.username(rs.getString(2))
+									.password(rs.getString(3))
+									.name(rs.getString(4))
+									.create_date(rs.getTimestamp(5).toLocalDateTime())
+									.update_date(rs.getTimestamp(6).toLocalDateTime())
+									.build();
+			UserDtl temp2 = UserDtl.builder()
+									.usercode(rs.getInt(7))
+									.address(rs.getString(8))
+									.phone(rs.getString(9))
+									.preference(rs.getString(10))
+									.create_date(rs.getTimestamp(11).toLocalDateTime())
+									.update_date(rs.getTimestamp(12).toLocalDateTime())
+									.build();
+			userMap.put("um", temp);
+			userMap.put("ud", temp2);
+		} catch (SQLException e) {
+			System.out.println("아이디와 비밀번호를 확인해주세요");
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			System.out.println(username + "님 환영합니다!");
+			pool.freeConnection(con, pstmt, rs);
 		}
 		
-		return result;
+		return userMap;
 	}
 }
