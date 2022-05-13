@@ -398,12 +398,15 @@ public class UserDao {
 									.build();
 			userMap.put("um", temp);
 			userMap.put("ud", temp2);
+			
+			sql=((UserMst)userMap.get("um")).getName();
 		} catch (SQLException e) {
 			System.out.println("아이디와 비밀번호를 확인해주세요");
+			sql = "Nobody";
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println(username + "님 환영합니다!");
+			System.out.println(sql + "님 환영합니다!");
 			pool.freeConnection(con, pstmt, rs);
 		}
 		
