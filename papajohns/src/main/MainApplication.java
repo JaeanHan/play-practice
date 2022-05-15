@@ -30,6 +30,10 @@ public class MainApplication {
 		System.out.println("삭제 후: ");
 		controller.printUserAll();
 		
+		controller.getUsernameByEmail("JaeAn@naver.com");
+		
+		controller.updatePassword("jaean1999", "j1a2e3a4n5");
+		
 	}
 
 }

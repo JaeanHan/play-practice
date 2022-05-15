@@ -17,7 +17,7 @@ import userData.UserMst;
 public class UserDao {
 	private final DBConnectionMgr pool;
 	
-	public int signUp(String username, String password, String name) {
+	public int signUp(String username, String password, String email) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt=null;
@@ -38,7 +38,7 @@ public class UserDao {
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
-			pstmt.setString(3, name);
+			pstmt.setString(3, email);
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			System.out.println("signUp SQL Error");
@@ -51,7 +51,7 @@ public class UserDao {
 		return result;
 	}
 	
-	public void updateInfo(String username, Scanner sc) {
+	public void updateDtl(String username, Scanner sc) {
 		while(true) {
 			System.out.print("변경하고 싶은 정보의 번호를 입력해주세요: ");
 			System.out.println("[1. Address]");
@@ -197,6 +197,34 @@ public class UserDao {
 		
 	}
 
+	public int updatePassword(String username, String newPassword) {
+		String sql = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "update user_mst "
+					+ "set password = ? "
+					+ "where usercode = "
+					+ "(select usercode from user_mst where username = ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, newPassword);
+			pstmt.setString(2, username);
+			result = pstmt.executeUpdate();
+			System.out.println("비밀번호가 변경되었습니다.");
+		} catch (SQLException e) {
+			System.out.println("updatePassword SQL Error");
+			System.out.println("비밀번호가 변경되지 않았습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
 	
 	private HashMap<String, User> getUserByUsername(String username) {
 		String sql = null;
@@ -221,7 +249,7 @@ public class UserDao {
 									.usercode(rs.getInt(1))
 									.username(rs.getString(2))
 									.password(rs.getString(3))
-									.name(rs.getString(4))
+									.email(rs.getString(4))
 									.create_date(rs.getTimestamp(5).toLocalDateTime())
 									.update_date(rs.getTimestamp(6).toLocalDateTime())
 									.build();
@@ -306,7 +334,7 @@ public class UserDao {
 									.usercode(rs.getInt(1))
 									.username(rs.getString(2))
 									.password(rs.getString(3))
-									.name(rs.getString(4))
+									.email(rs.getString(4))
 									.create_date(rs.getTimestamp(5).toLocalDateTime())
 									.update_date(rs.getTimestamp(6).toLocalDateTime())
 									.build();
@@ -384,7 +412,7 @@ public class UserDao {
 									.usercode(rs.getInt(1))
 									.username(rs.getString(2))
 									.password(rs.getString(3))
-									.name(rs.getString(4))
+									.email(rs.getString(4))
 									.create_date(rs.getTimestamp(5).toLocalDateTime())
 									.update_date(rs.getTimestamp(6).toLocalDateTime())
 									.build();
@@ -399,12 +427,13 @@ public class UserDao {
 			userMap.put("um", temp);
 			userMap.put("ud", temp2);
 			
-			sql=((UserMst)userMap.get("um")).getName();
+			sql=((UserMst)userMap.get("um")).getUsername();
 		} catch (SQLException e) {
 			System.out.println("아이디와 비밀번호를 확인해주세요");
 			sql = "Nobody";
 		} catch (Exception e) {
 			e.printStackTrace();
+			sql = "Some Error Occurred";
 		} finally {
 			System.out.println(sql + "님 환영합니다!");
 			pool.freeConnection(con, pstmt, rs);
@@ -412,4 +441,32 @@ public class UserDao {
 		
 		return userMap;
 	}
+	
+	public void getUsernameByEmail(String email) {
+		String sql = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select username from user_mst where email = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+			rs.next();
+			System.out.println("해당 email의 username은 " + rs.getString(1) + "입니다.");
+			
+		} catch (SQLException e ) {
+			System.out.println("findUsernameByName SQL Error");
+			System.out.println("해당 이름에 대한 정보는 존재하지 않습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+	}
+	
+	
+	
 }
