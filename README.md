@@ -1,10 +1,10 @@
 # play-practice
 
-Dababase tables: user_mst, user_dtl
+### Dababase tables: user_mst, user_dtl
 
-- user_mst trigger (after insert)
+#### user_mst trigger (after insert)
 
-BEGIN
+    BEGIN
 	INSERT into
 		user_dtl
 	VALUES(
@@ -15,14 +15,14 @@ BEGIN
 		NOW(),
 		NOW()
 	);
-END
+    END
 
-- user_mst trigger (before delete)
+#### user_mst trigger (before delete)
 
-BEGIN
+    BEGIN
 	delete
 	from
 		user_dtl
 	where
 		usercode = OLD.usercode;
-END
+    END
