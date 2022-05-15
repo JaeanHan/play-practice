@@ -11,7 +11,7 @@ public class MainApplication {
 		UserDao controller = new UserDao(DBConnectionMgr.getInstance());
 		Scanner sc = new Scanner(System.in);
 		
-		controller.signUp("testJaean", "1234", "JaeAn");
+//		controller.signUp("testJaean", "1234", "JaeAn");
 //		
 //		controller.updateAddress("testJaean", "용인시 수지구 죽전동");
 
@@ -24,16 +24,22 @@ public class MainApplication {
 //		controller.printPrettier("jaeanana");
 //		System.out.println(controller.getUserAll());
 //		System.out.println();
-		System.out.println("삭제 전: ");
-		controller.printUserAll();
-		controller.deleteByUsername("testJaean");
-		System.out.println("삭제 후: ");
-		controller.printUserAll();
+//		System.out.println("삭제 전: ");
+//		controller.printUserAll();
+//		controller.deleteByUsername("testJaean");
+//		System.out.println("삭제 후: ");
+//		controller.printUserAll();
+//		
+//		controller.getUsernameByEmail("JaeAn@naver.com");
+//		
+//		controller.updatePassword("jaean1999", "j1a2e3a4n5");
 		
-		controller.getUsernameByEmail("JaeAn@naver.com");
-		
-		controller.updatePassword("jaean1999", "j1a2e3a4n5");
-		
+//		char[] username = {'j','a','e','a','n','1','9','9','9'};
+//		
+//		for(char temp : username) {
+//			System.out.println((int)temp);
+//		}
+		System.out.println('a');
 	}
 
 }
