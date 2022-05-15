@@ -2,7 +2,7 @@
 
 Dababase tables: user_mst, user_dtl
 
-# user_mst trigger (after insert)
+- user_mst trigger (after insert)
 
 BEGIN
 	INSERT into
@@ -17,7 +17,7 @@ BEGIN
 	);
 END
 
-# user_mst trigger (before delete)
+- user_mst trigger (before delete)
 
 BEGIN
 	delete
