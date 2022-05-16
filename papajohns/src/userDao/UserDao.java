@@ -9,9 +9,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import db.DBConnectionMgr;
 import lombok.RequiredArgsConstructor;
-import userData.User;
-import userData.UserDtl;
-import userData.UserMst;
+import userDto.User;
+import userDto.UserDtl;
+import userDto.UserMst;
 
 @RequiredArgsConstructor
 public class UserDao {

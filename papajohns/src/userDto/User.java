@@ -1,4 +1,4 @@
-package userData;
+package userDto;
 
 public class User {
 

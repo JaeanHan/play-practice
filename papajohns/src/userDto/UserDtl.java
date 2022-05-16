@@ -1,4 +1,4 @@
-package userData;
+package userDto;
 
 import java.time.LocalDateTime;
 
