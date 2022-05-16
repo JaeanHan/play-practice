@@ -58,6 +58,7 @@ public class UserDao {
 			System.out.println("[2. Preference]");
 			System.out.println("[3. Contact]");
 			System.out.println("[4. Password]");
+			System.out.println("[5. Delete Account]"); //일단 넣음
 			System.out.println("[0. quit]");
 			
 			try { // consider typo
@@ -68,14 +69,22 @@ public class UserDao {
 					System.out.print("변경하실 주소를 입력해 주세요: ");
 					updateAddress(username, sc.nextLine());
 				} else if (num==2) {
-					System.out.println("가장 좋아하는 메뉴를 입력해주세요!: ");
+					System.out.print("가장 좋아하는 메뉴를 입력해주세요!: ");
 					updatePreference(username, sc.nextLine());
 				} else if (num==3) {
-					System.out.println("바뀐 연락처를 입력해주세요: ");
+					System.out.print("바뀐 연락처를 입력해주세요: ");
 					updatePhone(username, sc.nextLine());
 				} else if (num == 4) {
-					System.out.println("바꿀 비밀번호를 입력해주세요: ");
+					System.out.print("바꿀 비밀번호를 입력해주세요: ");
 					updatePassword(username, sc.nextLine());
+				} else if (num == 5) {
+					System.out.print("회원 탈퇴하시려면 username을, 취소하시려면 no를 입력해 주세요: ");
+					String ans = sc.nextLine();
+					if(ans.equals(username)) {
+						deleteByUsername(username);
+					} else {
+						continue;
+					}
 				} else if (num==0) {
 					System.out.println("정보 변경을 종료합니다.");
 					break;
@@ -295,7 +304,7 @@ public class UserDao {
 		System.out.println(printable.get("ud"));
 	}
 
-	public int deleteByUsername(String username) {
+	private int deleteByUsername(String username) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -311,6 +320,7 @@ public class UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, username);
 			result = pstmt.executeUpdate();
+			
 		} 
 		catch (SQLException e) {
 //			System.out.println("deleteInfoByUsername SQL Error");
@@ -320,6 +330,7 @@ public class UserDao {
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+		System.out.println("회원탈퇴가 성공적으로 진행됐습니다.");
 		return result;
 	}
 
