@@ -1,0 +1,540 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&family=Nunito&display=swap');
+body {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f3f9f9;
+    height: 1500px;
+}
+
+.header {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    margin: 0 auto;
+    padding-right: 20px;
+    box-sizing: border-box;
+    position:relative;
+    position:fixed;
+    width:100%;
+    z-index: 100;
+}
+
+.header__nav {
+    width: 1185px;
+    /* height: 225px; */
+    background-color: white;
+    display: flex;
+    opacity: 0.95;
+    z-index: 99;
+    position: absolute;
+    top:100px;
+    left:120px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top: 1px solid #d6d6d6;
+    /* 여기서 부터가 문제가 되는 부분입니다.
+        hover 부분은 아래에 있습니다.
+        @@@로 표시하였습니다.
+    */
+    height:0px;
+    overflow: hidden;
+    transition-delay: 0s;
+    transition-duration: 0.7s;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    /* 여기까지 입니다. */
+}
+
+.header__nav__list {
+    display: flex;
+}
+
+.header__nav__list li{
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+    justify-content: flex-start;
+    padding-left: 40px;
+    padding-top: 30px;
+    box-sizing: border-box;
+    border-right: 1px solid #d6d6d6;
+}
+
+.header__nav__list li:last-child {
+    border:none;
+}
+.header__nav__list li a{
+    font-weight:400;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+.header__nav__list li a:first-child{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.menu_wrap__list {
+    width: 400px;
+    display: flex;
+    padding: 0, 40px, 0, 60px;
+    margin-left: 100px;
+    justify-content: center;
+}
+
+.menu_wrap__list li{
+    margin-right: 40px;
+}
+
+.menu_wrap__list li:last-child {
+    margin-right: none;
+}
+
+.logo {
+    background-image: url(../img/220301_icon_logo.png);
+}
+
+.client_wrap__list {
+    display: flex;
+    width: 400px;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    box-sizing: border-box;
+    margin-right: 60px;
+}
+
+.client_wrap__list li{
+    margin-right: 50px;
+}
+
+.client_wrap__list li:last-child {
+    margin-right: none;
+}
+
+.client_wrap__list li:nth-child(2) {
+    width: 80px;
+    height: 30px;
+    border-radius: 15px;
+    border:1px solid;
+    text-align: center;
+    line-height: 30px;
+}
+
+.client_wrap__list__signup {
+    text-decoration: underline;
+}
+
+.select {
+    color:#d6d6d6;
+}
+
+/* .select:hover {
+    visibility: hidden;
+} */
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    여기 입니다. btn1이 
+    header__nav의
+    hover되는 부분입니다.
+*/
+#btn1 {
+    border: none;
+    background-color: white;
+}
+
+/* #btn1:hover, .header__nav, .header__nav:hover {
+    height:225px;
+} */
+/* 왜 무한 hover가 되는지 잘 모르겠습니다 
+    그냥 .header__nav {height:225px;}
+    으로 작동되는거 같은데 고칠 방법을
+    모르겠습니다.
+*/
+
+.main_slide_wrap {
+    margin-top: 100px;
+    width:100%;
+    height: 550px;
+}
+.slide_content {
+    width: 100%;
+    height: 480px;
+    /* background-color: blue; */
+    position:relative;
+    overflow: hidden;
+}
+
+.slide_content__list {
+    float:left;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:300%;
+    animation: sliding_animation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    /* animation-timing-function: ease-in-out; */
+}
+/* 애니메이션은 그냥 제 노트북 화면에 끼워맞춘 겁니다
+혹시 슬라이더 부분이 이상하게 잡힌다면
+left:0%
+left:-100%
+left:-200%
+left:-300%
+로 바꾸면 더 큰 화면에서도 아마 정상적이게 보일 겁니다.
+*/
+@keyframes sliding_animation {
+    0% {
+        position: absolute;
+          left: -15%;
+          top: 0;
+    }
+    20% {
+        position: absolute;
+          left: -15%;
+          top: 0;
+    }
+    30%{
+        position: absolute;
+        left: -155%;
+        top: 0;
+    }
+    65% {
+        position: absolute;
+        left: -155%;
+        top: 0;
+    }
+    75% {
+        position: absolute;
+        left: -285%;
+        top: 0;
+    }
+
+    99% {
+        position: absolute;
+        left: -285%;
+        top: 0;
+    }
+    100% {
+        position: absolute;
+          left: 0;
+          top: 0;
+    }
+}
+
+.slide_content__list {
+    display: flex;
+}
+
+.slide_content__list__item li {
+    width:33%;
+    height:480px;
+    position: absolute;
+    top: 0;
+    /* background-color: blueviolet; */
+}
+
+.slide_content__list__item img {
+    height:100%;
+}
+
+.one > img {left: 0%;}
+.two > img {left: 100%;}
+.three > img {left:200%;}
+
+/* 
+버튼 어떻게 구현해야할지 모르겠어서 그냥 
+애니메이션으로 구현했습니다 */
+.slide__btns {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f9f9;
+    position:relative;
+}
+
+.slide__btns__next {
+    position: absolute;
+    width:1185px;
+    height:40px;
+    top:-235px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.slide__btns__next button:first-child {
+    height:40px;
+    width:40px;
+    background-image: url(../img/icon_slide_prev.png);
+    border-radius: 20px;
+    border: none;
+    opacity: 0.7;
+}
+
+.slide__btns__next button:nth-child(2) {
+    height:40px;
+    width:40px;
+    background-image: url(../img/icon_slide_next.png);
+    border-radius: 20px;
+    border: none;
+    opacity: 0.7;
+}
+
+.slide__btns__next button:active {
+    visibility: hidden;
+}
+
+.slide__btns__item {
+    width:16px;
+    height:16px;
+    display: flex;
+    border-radius: 8px;
+    background-color: #d6d6d6;
+    margin-right: 10px;
+    border:none;
+}
+
+.s1{
+    animation: sliding_button1;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes sliding_button1 {
+    0% {
+        background-color: #869791;
+    }
+    20% {
+        background-color: #869791;
+    }
+    30%{
+        background-color: #d6d6d6;
+    }
+}
+
+.s2 {
+    animation: sliding_button2;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes sliding_button2 {
+    0% {
+        background-color: #d6d6d6;
+    }
+    20% {
+        background-color: #d6d6d6;
+    }
+    30%{
+        background-color: #869791;
+    }
+    65% {
+        background-color: #869791;
+    }
+    75% {
+        background-color: #d6d6d6;
+    }
+}
+
+.s3 {
+    animation: sliding_button3;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes sliding_button3 {
+    0% {
+        background-color: #d6d6d6;
+    }
+    65% {
+        background-color: #d6d6d6;
+    }
+    75% {
+        background-color: #869791;
+    }
+    100% {
+        background-color: #869791;
+    }
+}
+/* 여기까지가 버튼 애니메이션입니다. */
+
+.slide__btns__item:active {
+    color: #869791;
+}
+
+.main_address_wrap {
+    width: 1185px;
+    height: 60px;
+    background-color: white;
+    border-radius: 15px;
+    margin: 0 auto;
+    box-shadow: 0px 1px 1px #d6d6d6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:20px;
+}
+
+.main_address_wrap img {
+    margin-right: 4px;
+}
+
+.main_order_wrap {
+    display: flex;
+    width: 1185px;
+    height:160px;
+    margin:0 auto;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.main_order_wrap a div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:160px;
+    width:580px;
+}
+
+.main_order_wrap a:first-child div{
+    background-image: url(../img/btn_delivery.png);
+}
+
+.main_order_wrap a:nth-child(2) div{
+    background-image: url(../img/btn_wrapping.png);
+}
+
+.main_order_wrap a:first-child div span,
+.main_order_wrap a:nth-child(2) div span {
+    height:50px;
+    width:180px;
+    font-size: 35px;
+    color:white;
+    background-color: #e43d2b;
+}
+
+.main_event_wrap {
+    width: 1185px;
+    height: 325px;
+    margin:0 auto;
+    margin-top: 30px;
+    /* background-color: antiquewhite; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.main_event_wrap div {
+    width:450px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.main_event_wrap a {
+    display: flex;
+    width:715px;
+}
+
+.main_event_wrap a img{
+    width:100%;
+    border-radius: 20px;
+}
+
+.main_event_wrap1 {
+    display: flex;
+    height:325%;
+    width: 450px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main_event_wrap__up,
+.main_event_wrap__down {
+    display: flex;
+    width: 100%;
+    height:150px;
+    justify-content: space-between;
+}
+
+.main_event_wrap__btns__item {
+    width: 215px;
+    height: 150px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 1px 1px #d6d6d6;
+    border:none;
+    position:relative;
+}
+
+.main_event_wrap__btns__item:active {
+    border:1px solid #d6d6d6;
+}
+
+.main_event_wrap__btns__item img {
+    width:50px;
+    height:50px;
+}
+
+.main_event_wrap__btns__item span {
+    font-size: 25px;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.main_event_wrap__down {
+    align-items: flex-end;
+}
+
+.footer {
+    width:100%;
+    height: 325px;
+    background-color: white;
+    margin-top: 30px;
+    border-top: 1px solid #d6d6d6;
+}
+
+.footer__info {
+    width: 1185px;
+    height: 275px;
+    margin: 0 auto;
+    border-left: 1px solid #d6d6d6;
+    border-right: 1px solid #d6d6d6;
+    display: flex;
+}
+
+.footer__info__icons {
+    width:368px;
+    height:100%;
+}
+
+.footer__info__address {
+    width:817px;
+    height:100%;
+}
+
+.footer__end {
+    width:100%;
+    height:50px;
+    border-top: 1px solid #d6d6d6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+}

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="header">
+        <div class="menu_wrap">
+          <ul class="menu_wrap__list">
+            <li><a href="">메뉴</a></li>
+            <li><a href="">이벤트/할인</a></li>
+            <li><a href="">E-쿠폰주문</a></li>
+          </ul>
+        </div>
+        <a href="#" class="logo">
+          <img src="./img/220301_icon_logo.png" alt="logo" />
+        </a>
+        <div class="client_wrap">
+          <ul class="client_wrap__list">
+            <li><a href="" class="client_wrap__list__signup">회원가입</a></li>
+            <li><a href="" class="client_wrap__list__signin">로그인</a></li>
+            <li>
+              <a href="">
+                <i class="fa-solid fa-cart-shopping fa-2x fa-spin select"></i>
+              </a>
+            </li>
+            <li>
+              <div id="btn1">
+                <i class="fa-solid fa-caret-down fa-2x fa-spin select"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="header__nav">
+          <ul class="header__nav__list">
+            <li>
+              <a href="">주문</a>
+              <a href="">메뉴</a>
+              <a href="">E-쿠폰주문</a>
+              <a href="">매장찾기</a>
+            </li>
+            <li>
+              <a href="">이벤트/할인</a>
+              <a href="">진행중 이벤트</a>
+              <a href="">지난 이벤트</a>
+              <a href="">제휴 할인</a>
+              <a href="">쿠폰발급</a>
+            </li>
+            <li>
+              <a href="">고객센터</a>
+              <a href="">공지사항</a>
+              <a href="">Q&A</a>
+              <a href="">직접문의</a>
+            </li>
+            <li>
+              <a href="">회사소개</a>
+              <a href="">가맹점 모집</a>
+            </li>
+          </ul>
+        </div>
+      </header>
+      <section class="main_slide_wrap">
+        <div class="slide_content">
+          <ul class="slide_content__list">
+            <li class="slide_content__list__item one">
+              <img src="./img/220426_05_main_promotion.jpg" alt="" />
+            </li>
+            <li class="slide_content__list__item two">
+              <img src="./img/220331_04_main_realMinaSet.jpg" alt="" />
+            </li>
+            <li class="slide_content__list__item three">
+              <img src="./img/220301_main_RegularSet.jpg" alt="" />
+            </li>
+          </ul>
+        </div>
+        <div class="slide__btns">
+          <div class="slide__btns__next">
+            <button></button>
+            <button></button>
+          </div>
+          <button class="slide__btns__item s1"></button>
+          <button class="slide__btns__item s2"></button>
+          <button class="slide__btns__item s3"></button>
+        </div>
+      </section>
+      <section class="main_address_wrap">
+        <img src="./img/icon_marker.png" alt="" />
+        <span id="sexy_string">기본 주소를 등록해 주세요.</span>
+      </section>
+      <section class="main_order_wrap">
+        <a href="" alt=""
+          ><div><span id="sexy_string2">배달 주문</span></div></a
+        >
+        <a href="" alt=""
+          ><div><span id="sexy_string3">포장 주문</span></div></a
+        >
+      </section>
+      <section class="main_event_wrap">
+        <div class="main_event_wrap1">
+          <div class="main_event_wrap__up">
+            <button class="main_event_wrap__btns__item">
+              <img src="./img/icon_link3.png" alt="" />
+              <span>이벤트</span>
+            </button>
+            <button class="main_event_wrap__btns__item">
+              <img src="./img/icon_link2.png" alt="" />
+              <span>제휴할인</span>
+            </button>
+          </div>
+          <div class="main_event_wrap__down">
+            <button class="main_event_wrap__btns__item">
+              <img src="./img/icon_link5.png" alt="" />
+              <span>E-쿠폰주문</span>
+            </button>
+            <button class="main_event_wrap__btns__item">
+              <img src="./img/icon_link4.png" alt="" />
+              <span>매장찾기</span>
+            </button>
+          </div>
+        </div>
+        <a href="" alt="">
+          <img src="./img/220225_franchisee_low.png" alt="" />
+        </a>
+      </section>
+      <footer class="footer">
+        <div class="footer__info">
+          <div class="footer__info__icons">logo</div>
+          <address class="footer__info__address">address</address>
+        </div>
+        <div class="footer__end">
+          COPYRIGHT © 2020 PAPAJOHNS.ALL RIGHTS RESERVED
+        </div>
+      </footer>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/3e27d22283.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function textDisplay(element) {
+        const textArray = element.innerText.split("");
+        const special = ["피", "자", "사", "주", "세", "요"];
+        const exception = [" ", "\n", ".", ",", ":", ")"];
+        const randomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1) + min);
+        };
+
+        const numArray = [];
+        textArray.forEach((_) => {
+          const num = randomIntBetween(5, 40);
+          numArray.push(num);
+        });
+        let newText;
+        let completeCount;
+        const timer = setInterval(() => {
+          completeCount = 0;
+          newText = "";
+          numArray.forEach((num, i) => {
+            if (exception.includes(textArray[i]) || numArray[i] === 0) {
+              newText += textArray[i];
+              completeCount += 1;
+            } else {
+              newText += special[numArray[i] % special.length];
+              numArray[i] = --num;
+            }
+          });
+          element.innerText = newText;
+          if (completeCount === numArray.length) clearInterval(timer);
+        }, 100);
+      }
+
+      const p = document.getElementById("sexy_string");
+      textDisplay(p);
+    </script>
+    <script>
+      function textDisplay(element) {
+        const textArray = element.innerText.split("");
+        const special = ["부", "릉", "왱", "앵"];
+        const exception = [" ", "\n", ".", ",", ":", ")"];
+        const randomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1) + min);
+        };
+
+        const numArray = [];
+        textArray.forEach((_) => {
+          const num = randomIntBetween(5, 40);
+          numArray.push(num);
+        });
+        let newText;
+        let completeCount;
+        const timer = setInterval(() => {
+          completeCount = 0;
+          newText = "";
+          numArray.forEach((num, i) => {
+            if (exception.includes(textArray[i]) || numArray[i] === 0) {
+              newText += textArray[i];
+              completeCount += 1;
+            } else {
+              newText += special[numArray[i] % special.length];
+              numArray[i] = --num;
+            }
+          });
+          element.innerText = newText;
+          if (completeCount === numArray.length) clearInterval(timer);
+        }, 100);
+      }
+
+      const q = document.getElementById("sexy_string2");
+      textDisplay(q);
+    </script>
+    <script>
+      function textDisplay(element) {
+        const textArray = element.innerText.split("");
+        const special = ["뚜", "벅", "하", "호"];
+        const exception = [" ", "\n", ".", ",", ":", ")"];
+        const randomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1) + min);
+        };
+
+        const numArray = [];
+        textArray.forEach((_) => {
+          const num = randomIntBetween(5, 40);
+          numArray.push(num);
+        });
+        let newText;
+        let completeCount;
+        const timer = setInterval(() => {
+          completeCount = 0;
+          newText = "";
+          numArray.forEach((num, i) => {
+            if (exception.includes(textArray[i]) || numArray[i] === 0) {
+              newText += textArray[i];
+              completeCount += 1;
+            } else {
+              newText += special[numArray[i] % special.length];
+              numArray[i] = --num;
+            }
+          });
+          element.innerText = newText;
+          if (completeCount === numArray.length) clearInterval(timer);
+        }, 100);
+      }
+
+      const w = document.getElementById("sexy_string3");
+      textDisplay(w);
+    </script>
+  </body>
+</html>
