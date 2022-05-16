@@ -17,7 +17,7 @@ import userDto.UserMst;
 public class UserDao {
 	private final DBConnectionMgr pool;
 	
-	public int signUp(String username, String password, String email) {
+	private int signUp(String username, String password, String email) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt=null;
@@ -42,7 +42,7 @@ public class UserDao {
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 //			System.out.println("signUp SQL Error");
-			System.out.println("회원가입에 실패하였습니다.");
+			System.out.println("이미 사용중인 아이디입니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -51,12 +51,13 @@ public class UserDao {
 		return result;
 	}
 	
-	public void updateDtl(String username, Scanner sc) {
+	public void updateInfo(String username, Scanner sc) {
 		while(true) {
 			System.out.print("변경하고 싶은 정보의 번호를 입력해주세요: ");
 			System.out.println("[1. Address]");
 			System.out.println("[2. Preference]");
 			System.out.println("[3. Contact]");
+			System.out.println("[4. Password]");
 			System.out.println("[0. quit]");
 			
 			try { // consider typo
@@ -72,6 +73,9 @@ public class UserDao {
 				} else if (num==3) {
 					System.out.println("바뀐 연락처를 입력해주세요: ");
 					updatePhone(username, sc.nextLine());
+				} else if (num == 4) {
+					System.out.println("바꿀 비밀번호를 입력해주세요: ");
+					updatePassword(username, sc.nextLine());
 				} else if (num==0) {
 					System.out.println("정보 변경을 종료합니다.");
 					break;
@@ -203,7 +207,7 @@ public class UserDao {
 		
 	}
 
-	public int updatePassword(String username, String newPassword) {
+	private int updatePassword(String username, String newPassword) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -285,7 +289,7 @@ public class UserDao {
 		return hashMapResult;
 	}
 
-	public void printInfoPrettier(String username) {
+	private void printInfoPrettier(String username) {
 		HashMap<String, User> printable = getUserByUsername(username);
 		System.out.println(printable.get("um"));
 		System.out.println(printable.get("ud"));
@@ -387,7 +391,7 @@ public class UserDao {
 		
 	}
 
-	public HashMap<String, User> SignIn(String username, String password) {
+	private HashMap<String, User> SignIn(String username, String password) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -449,7 +453,7 @@ public class UserDao {
 		return userMap;
 	}
 	
-	public void getUsernameByEmail(String email) {
+	private void getUsernameByEmail(String email) {
 		String sql = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -474,6 +478,47 @@ public class UserDao {
 		}
 	}
 	
-	
-	
+	public void serviceControl(Scanner sc) {
+		while(true) {
+			System.out.println("이용하실 서비스를 선택해주세요: ");
+			System.out.println("[1. sign in]");
+			System.out.println("[2. sign up]");
+			System.out.println("[3. find username by email]");
+			System.out.println("[0. quit]");
+			
+			try {
+				int num = sc.nextInt();
+				sc.nextLine();
+				
+				if(num == 1) {
+					System.out.print("아이디를 입력해주세요: ");
+					String username = sc.nextLine();
+					System.out.print("비밀번호를 입력해주세요: ");
+					String password = sc.nextLine();
+					SignIn(username, password);
+				} else if (num == 2) {
+					System.out.print("가입하실 아이디를 입력해주세요: ");
+					String username = sc.nextLine();
+					System.out.print("사용하실 비밀번호를 입력해주세요");
+					String password = sc.nextLine();
+					System.out.print("마지막으로 이메일을 입력해주세요!");
+					String email = sc.nextLine();
+					signUp(username, password, email);
+				} else if (num == 3) {
+					System.out.println("아이디 찾기를 선택하셨습니다.");
+					System.out.print("회원가입 할 때 사용한 이메일을 입력해주세요: ");
+					String email = sc.nextLine();
+					getUsernameByEmail(email);
+				} else if (num == 0) {
+					System.out.println("서비스를 종료합니다.");
+					break;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("오타에 주의하세요.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("오류가 발생하였지만 프로그램은 종료되지 않았습니다.");
+			}
+		}
+	}
 }
