@@ -41,9 +41,9 @@ public class UserDao {
 			pstmt.setString(3, email);
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
-			System.out.println("signUp SQL Error");
-		}
-			catch (Exception e) {
+//			System.out.println("signUp SQL Error");
+			System.out.println("회원가입에 실패하였습니다.");
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt);
@@ -110,9 +110,10 @@ public class UserDao {
 			pstmt.setString(1, address);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
-			
+			System.out.println("주소지가 변경되었습니다.");
 		} catch (SQLException e) {
-			System.out.println("updateAdress SQL Error");
+//			System.out.println("updateAdress SQL Error");
+			System.out.println("주소지가 변경되지 않았습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -146,8 +147,10 @@ public class UserDao {
 			pstmt.setString(1, phone);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
+			System.out.println("연락처가 변경되었습니다.");
 		} catch (SQLException e ) {
-			System.out.println("updatePhone SQL Error");
+//			System.out.println("updatePhone SQL Error");
+			System.out.println("연락처가 변경되지 않았습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -182,9 +185,12 @@ public class UserDao {
 			pstmt.setString(1, menu);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
+			System.out.println("선호 메뉴가 변경되었습니다.");
+			System.out.println("추후에 선택된 메뉴와 관련된 이벤트가 발송됩니다.");
 		} 
 		catch (SQLException e) {
-			System.out.println("updatePreference SQL Error");
+//			System.out.println("updatePreference SQL Error");
+			System.out.println("메뉴가 변경되지 않았습니다.");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -215,7 +221,7 @@ public class UserDao {
 			result = pstmt.executeUpdate();
 			System.out.println("비밀번호가 변경되었습니다.");
 		} catch (SQLException e) {
-			System.out.println("updatePassword SQL Error");
+//			System.out.println("updatePassword SQL Error");
 			System.out.println("비밀번호가 변경되지 않았습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -267,7 +273,7 @@ public class UserDao {
 				hashMapResult.put("ud", ud);
 				
 			} catch (SQLException e) {
-				System.out.println("getUserByUsername SQL Error");
+//				System.out.println("getUserByUsername SQL Error");
 				System.out.println("존재하지 않는 유저네임입니다.");
 			}
 		}catch (Exception e) {
@@ -303,7 +309,8 @@ public class UserDao {
 			result = pstmt.executeUpdate();
 		} 
 		catch (SQLException e) {
-			System.out.println("deleteInfoByUsername SQL Erroe");
+//			System.out.println("deleteInfoByUsername SQL Error");
+			System.out.println("회원 탈퇴에 실패하였습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -458,7 +465,7 @@ public class UserDao {
 			System.out.println("해당 email의 username은 " + rs.getString(1) + "입니다.");
 			
 		} catch (SQLException e ) {
-			System.out.println("findUsernameByName SQL Error");
+//			System.out.println("getUsernameByName SQL Error");
 			System.out.println("해당 이름에 대한 정보는 존재하지 않습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
