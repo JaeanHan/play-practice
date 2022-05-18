@@ -4,36 +4,44 @@ import java.util.Scanner;
 
 import db.DBConnectionMgr;
 import userDao.UserDao;
+import userService.UserService;
 
 public class MainApplication {
 
 	public static void main(String[] args) {
-		UserDao controller = new UserDao(DBConnectionMgr.getInstance());
 		Scanner sc = new Scanner(System.in);
+		UserService userService = UserService.getInstance(DBConnectionMgr.getInstance(), sc);
 		
-		controller.signUp("testJaean", "1234", "JaeAn");
-//		
-//		controller.updateAddress("testJaean", "용인시 수지구 죽전동");
-
-//		controller.updatePhone("testJaean", "123456789");
+		int signinResult = userService.greeting();
+		if (signinResult == 1) {
+			System.out.println(userService.getUm().getUsername() + "님 환영합니다!");
+			while(true) {
+				System.out.println("실행 할 기능을 입력해주세요");
+				System.out.println("[1. 유저 정보 변경]");
+				System.out.println("[2. 피자 주문]");
+				System.out.println("[0. 종료]");
+				
+				int num = sc.nextInt();
+				sc.nextLine();
+				
+				if(num==1) {
+					userService.update();
+				} else if(num==2) {
+					System.out.println("준비중인 서비스입니다.");
+				} else if(num==0) {
+					System.out.println("프로그램을 종료합니다.");
+					break;
+				} else {
+					continue;
+				}
+				
+			}
+			
+		}
 		
-//		controller.updatePreference("testJaean", "고구마 베이컨 피자");
-		
-//		System.out.println(controller.getUserByUsername("jaean1999"));
-		
-//		controller.printPrettier("jaeanana");
-//		System.out.println(controller.getUserAll());
-//		System.out.println();
-		System.out.println("삭제 전: ");
-		controller.printUserAll();
-		controller.deleteByUsername("testJaean");
-		System.out.println("삭제 후: ");
-		controller.printUserAll();
-		
-		controller.getUsernameByEmail("JaeAn@naver.com");
-		
-		controller.updatePassword("jaean1999", "j1a2e3a4n5");
+		System.out.println("안녕히가세요!");
 		
 	}
 
 }
+

@@ -25,15 +25,15 @@ public class UserDao {
 		
 		try {
 			con=pool.getConnection();
-			sql = "INSERT INTO\r\n"
-					+ "	user_mst\r\n"
-					+ "VALUES(\r\n"
-					+ "	0,\r\n"
-					+ "	?,\r\n"
-					+ "	?,\r\n"
-					+ "	?,\r\n"
-					+ "	NOW(),\r\n"
-					+ "	NOW()\r\n"
+			sql = "INSERT INTO "
+					+ "	user_mst "
+					+ "VALUES( "
+					+ "	0, "
+					+ "	?, "
+					+ "	?, "
+					+ "	?, "
+					+ "	NOW(), "
+					+ "	NOW() "
 					+ ")";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, username);
@@ -42,7 +42,7 @@ public class UserDao {
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 //			System.out.println("signUp SQL Error");
-			System.out.println("이미 사용중인 아이디입니다.");
+			System.out.println("\n[이미 사용중인 아이디입니다.]\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -51,15 +51,18 @@ public class UserDao {
 		return result;
 	}
 	
-	public void updateInfo(String username, Scanner sc) {
+	protected HashMap<String, User> updateInfo(String username, Scanner sc) {
+		HashMap<String, User> result = null;
 		while(true) {
-			System.out.print("변경하고 싶은 정보의 번호를 입력해주세요: ");
+			System.out.println("[저장된 정보입니다.]");
+			printInfoPrettier(username);
 			System.out.println("[1. Address]");
 			System.out.println("[2. Preference]");
 			System.out.println("[3. Contact]");
 			System.out.println("[4. Password]");
 			System.out.println("[5. Delete Account]"); //일단 넣음
 			System.out.println("[0. quit]");
+			System.out.println("변경하고 싶은 정보의 번호를 입력해주세요: ");
 			
 			try { // consider typo
 				int num = sc.nextInt(); 
@@ -83,7 +86,7 @@ public class UserDao {
 					if(ans.equals(username)) {
 						deleteByUsername(username);
 					} else {
-						continue;
+						System.out.println("취소 하였습니다.");
 					}
 				} else if (num==0) {
 					System.out.println("정보 변경을 종료합니다.");
@@ -91,11 +94,10 @@ public class UserDao {
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("오타에 주의하세요.");
-			} finally {
-				System.out.println("[바뀐 정보입니다!]");
-				printInfoPrettier(username);
-			}
+			} 
 		}
+		result = getUserByUsername(username);
+		return result;
 	}
 	
 	private int updateAddress(String username, String address) {
@@ -106,27 +108,15 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "UPDATE\r\n"
-					+ "	user_dtl\r\n"
-					+ "SET\r\n"
-					+ "	address=?,\r\n"
-					+ "	update_date = NOW()\r\n"
-					+ "WHERE\r\n"
-					+ "	usercode = (SELECT\r\n"
-					+ "						usercode\r\n"
-					+ "					from\r\n"
-					+ "						user_mst\r\n"
-					+ "					where\r\n"
-					+ "						username = ?\r\n"
-					+ "					)";
+			sql = "UPDATE user_dtl SET address = ?, update_date = now() "
+					+ "WHERE usercode = (SELECT usercode FROM user_mst WHERE username = ?)";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, address);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
-			System.out.println("주소지가 변경되었습니다.");
 		} catch (SQLException e) {
 //			System.out.println("updateAdress SQL Error");
-			System.out.println("주소지가 변경되지 않았습니다.");
+			System.out.println("\n[주소지가 변경되지 않았습니다.]/n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -143,27 +133,15 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "UPDATE\r\n"
-					+ "	user_dtl\r\n"
-					+ "SET\r\n"
-					+ "	phone = ?,\r\n"
-					+ "	update_date = NOW()\r\n"
-					+ "WHERE\r\n"
-					+ "	usercode = (SELECT\r\n"
-					+ "						usercode\r\n"
-					+ "					from\r\n"
-					+ "						user_mst\r\n"
-					+ "					where\r\n"
-					+ "						username = ?\r\n"
-					+ "					)";
+			sql = "UPDATE user_dtl SET phone = ?, update_date = now() "
+					+ "WHERE usercode = (SELECT usercode FROM user_mst WHERE username = ?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, phone);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
-			System.out.println("연락처가 변경되었습니다.");
 		} catch (SQLException e ) {
 //			System.out.println("updatePhone SQL Error");
-			System.out.println("연락처가 변경되지 않았습니다.");
+			System.out.println("\n[연락처가 변경되지 않았습니다.]\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -181,29 +159,18 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "UPDATE\r\n"
-					+ "	user_dtl\r\n"
-					+ "SET\r\n"
-					+ "	preference = ?,\r\n"
-					+ "	update_date = NOW()\r\n"
-					+ "WHERE\r\n"
-					+ "	usercode = (SELECT\r\n"
-					+ "						usercode\r\n"
-					+ "					from\r\n"
-					+ "						user_mst\r\n"
-					+ "					where\r\n"
-					+ "						username = ?\r\n"
-					+ "					)";
+			sql = "UPDATE user_dtl SET preference = ?, update_date = now()"
+					+ "WHERE usercode = (SELECT usercode FROM user_mst WHERE username = ?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, menu);
 			pstmt.setString(2, username);
 			result = pstmt.executeUpdate();
-			System.out.println("선호 메뉴가 변경되었습니다.");
-			System.out.println("추후에 선택된 메뉴와 관련된 이벤트가 발송됩니다.");
+			System.out.println("\n[선호 메뉴가 변경되었습니다.]");
+			System.out.println("[추후에 선택된 메뉴와 관련된 이벤트가 발송됩니다.]\n");
 		} 
 		catch (SQLException e) {
 //			System.out.println("updatePreference SQL Error");
-			System.out.println("메뉴가 변경되지 않았습니다.");
+			System.out.println("\n[메뉴가 변경되지 않았습니다.]\n");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -211,9 +178,7 @@ public class UserDao {
 		finally {
 			pool.freeConnection(con, pstmt);
 		}
-		
 		return result;
-		
 	}
 
 	private int updatePassword(String username, String newPassword) {
@@ -225,7 +190,8 @@ public class UserDao {
 		try {
 			con = pool.getConnection();
 			sql = "update user_mst "
-					+ "set password = ? "
+					+ "set password = ?, "
+					+ "update_date = NOW() "
 					+ "where usercode = "
 					+ "(select usercode from user_mst where username = ?)";
 			pstmt = con.prepareStatement(sql);
@@ -254,10 +220,10 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT\r\n"
-					+ "	*\r\n"
-					+ "FROM user_mst um LEFT OUTER JOIN user_dtl ud ON(um.usercode = ud.usercode)\r\n"
-					+ "WHERE\r\n"
+			sql = "SELECT "
+					+ "	* "
+					+ "FROM user_mst um LEFT OUTER JOIN user_dtl ud ON(um.usercode = ud.usercode) "
+					+ "WHERE "
 					+ "	um.username = ?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, username);
@@ -312,10 +278,10 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "DELETE\r\n"
-					+ "FROM\r\n"
-					+ "	user_mst\r\n"
-					+ "WHERE\r\n"
+			sql = "DELETE "
+					+ "FROM "
+					+ "	user_mst "
+					+ "WHERE "
 					+ "	username = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, username);
@@ -345,8 +311,8 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT\r\n"
-					+ "	*\r\n"
+			sql = "SELECT "
+					+ "	* "
 					+ "FROM user_mst um INNER JOIN user_dtl ud ON(um.usercode = ud.usercode)";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -411,9 +377,9 @@ public class UserDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT\r\n"
-					+ "	*\r\n"
-					+ "FROM user_mst um INNER JOIN user_dtl ud ON(um.usercode = ud.usercode)\r\n"
+			sql = "SELECT "
+					+ "	* "
+					+ "FROM user_mst um INNER JOIN user_dtl ud ON(um.usercode = ud.usercode) "
 					+ "WHERE um.username = ? AND um.password = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, username);
@@ -449,16 +415,17 @@ public class UserDao {
 			userMap.put("um", temp);
 			userMap.put("ud", temp2);
 			
-			sql=((UserMst)userMap.get("um")).getUsername();
 		} catch (SQLException e) {
-			System.out.println("아이디와 비밀번호를 확인해주세요");
-			sql = "Nobody";
+			System.out.println("\n[아이디와 비밀번호를 확인해주세요.]\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 			sql = "Some Error Occurred";
 		} finally {
-			System.out.println(sql + "님 환영합니다!");
 			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		if(userMap.size()==0) {
+			return null;
 		}
 		
 		return userMap;
@@ -489,7 +456,9 @@ public class UserDao {
 		}
 	}
 	
-	public void serviceControl(Scanner sc) {
+	protected HashMap<String, User> helpSignin(Scanner sc) {
+		HashMap<String, User> result = null;
+		
 		while(true) {
 			System.out.println("이용하실 서비스를 선택해주세요: ");
 			System.out.println("[1. sign in]");
@@ -506,7 +475,7 @@ public class UserDao {
 					String username = sc.nextLine();
 					System.out.print("비밀번호를 입력해주세요: ");
 					String password = sc.nextLine();
-					SignIn(username, password);
+					result = SignIn(username, password);
 				} else if (num == 2) {
 					System.out.print("가입하실 아이디를 입력해주세요: ");
 					String username = sc.nextLine();
@@ -525,11 +494,15 @@ public class UserDao {
 					break;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("오타에 주의하세요.");
+				System.out.println("\n[오타에 주의하세요.]\n");
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("오류가 발생하였지만 프로그램은 종료되지 않았습니다.");
 			}
+			if(result != null) {
+				break;
+			}
 		}
+		return result;
 	}
 }
