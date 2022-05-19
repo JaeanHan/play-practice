@@ -51,7 +51,7 @@ public class UserDao {
 		return result;
 	}
 	
-	protected HashMap<String, User> updateInfo(String username, Scanner sc) {
+	public HashMap<String, User> updateInfo(String username, Scanner sc) {
 		HashMap<String, User> result = null;
 		while(true) {
 			System.out.println("[저장된 정보입니다.]");
@@ -456,7 +456,7 @@ public class UserDao {
 		}
 	}
 	
-	protected HashMap<String, User> helpSignin(Scanner sc) {
+	public HashMap<String, User> helpSignin(Scanner sc) {
 		HashMap<String, User> result = null;
 		
 		while(true) {

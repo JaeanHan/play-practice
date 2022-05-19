@@ -3,14 +3,14 @@ package main;
 import java.util.Scanner;
 
 import db.DBConnectionMgr;
-import userDao.UserDao;
 import userService.UserService;
 
 public class MainApplication {
 
 	public static void main(String[] args) {
+		DBConnectionMgr pool = DBConnectionMgr.getInstance();
 		Scanner sc = new Scanner(System.in);
-		UserService userService = UserService.getInstance(DBConnectionMgr.getInstance(), sc);
+		UserService userService = new UserService(sc, pool);
 		
 		int signinResult = userService.greeting();
 		if (signinResult == 1) {

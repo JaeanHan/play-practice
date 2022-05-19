@@ -11,26 +11,20 @@ import userDto.UserDtl;
 import userDto.UserMst;
 
 @Data
-public class UserService extends UserDao{
+public class UserService {
 	private static UserService instance;
 	private final Scanner sc;
-	private UserMst um;
+	private UserMst um; //user session
 	private UserDtl ud;
+	private final UserDao userDao;
 	
-	private UserService(DBConnectionMgr pool, Scanner sc) {
-		super(pool); //추후에 수정예정
+	public UserService(Scanner sc, DBConnectionMgr pool) {
 		this.sc = sc;
-	}
-	
-	public static UserService getInstance(DBConnectionMgr pool, Scanner sc) {
-		if (instance == null) {
-			instance = new UserService(pool, sc);
-		}
-		return instance;
+		this.userDao = new UserDao(pool);
 	}
 	
 	public int greeting() {
-		HashMap<String, User> result = helpSignin(sc);
+		HashMap<String, User> result = userDao.helpSignin(sc);
 		if (result != null) {
 			um = (UserMst) result.get("um");
 			ud = (UserDtl) result.get("ud");
@@ -40,7 +34,7 @@ public class UserService extends UserDao{
 	}
 	
 	public void update() {
-		HashMap<String, User> result = updateInfo(um.getUsername(), sc);
+		HashMap<String, User> result = userDao.updateInfo(um.getUsername(), sc);
 		um = (UserMst) result.get("um");
 		ud = (UserDtl) result.get("ud");
 	}
