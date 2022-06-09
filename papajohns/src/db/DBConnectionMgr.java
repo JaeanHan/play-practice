@@ -38,8 +38,7 @@ import java.util.Vector;
  */
 public class DBConnectionMgr {
 
-	
-    private Vector connections = new Vector(10); //동시 접근x
+    private Vector connections = new Vector(10);
     private String _driver = "org.mariadb.jdbc.Driver",
     _url = "jdbc:mariadb://127.0.0.1:8001/papajohns_server?useUnicode=true&characterEncoding=UTF-08",
     _user = "root",
@@ -50,14 +49,14 @@ public class DBConnectionMgr {
     private int _openConnections = 50;
     private static DBConnectionMgr instance = null;
 
-    private DBConnectionMgr() { //싱글톤1
+    private DBConnectionMgr() {
     }
 
     /** Use this method to set the maximum number of open connections before
      unused connections are closed.
      */
 
-    public static DBConnectionMgr getInstance() { //싱글톤2
+    public static DBConnectionMgr getInstance() {
         if (instance == null) {
             synchronized (DBConnectionMgr.class) {
                 if (instance == null) {
@@ -69,50 +68,50 @@ public class DBConnectionMgr {
         return instance;
     }
 
-    public void setOpenConnectionCount(int count) { //setter
+    public void setOpenConnectionCount(int count) {
         _openConnections = count;
     }
 
 
-    public void setEnableTrace(boolean enable) { //setter
+    public void setEnableTrace(boolean enable) {
         _traceOn = enable;
     }
 
 
     /** Returns a Vector of java.sql.Connection objects */
-    public Vector getConnectionList() { //getter
+    public Vector getConnectionList() {
         return connections;
     }
 
 
     /** Opens specified "count" of connections and adds them to the existing pool */
-    public synchronized void setInitOpenConnections(int count) //Initializing connections(Vector)
+    public synchronized void setInitOpenConnections(int count)
             throws SQLException {
         Connection c = null;
         ConnectionObject co = null;
 
         for (int i = 0; i < count; i++) {
             c = createConnection();
-            co = new ConnectionObject(c, false); //Connection 객체생성
+            co = new ConnectionObject(c, false);
 
-            connections.addElement(co); //add()
+            connections.addElement(co);
             trace("ConnectionPoolManager: Adding new DB connection to pool (" + connections.size() + ")");
         }
     }
 
 
     /** Returns a count of open connections */
-    public int getConnectionCount() { //size()
+    public int getConnectionCount() {
         return connections.size();
     }
 
 
     /** Returns an unused existing or new connection.  */
-    public synchronized Connection getConnection() //사용하는 getConnection()
+    public synchronized Connection getConnection()
             throws Exception {
         if (!initialized) {
-            Class c = Class.forName(_driver); //Driver class (위에서 입력했던 경로의 클래스)
-            DriverManager.registerDriver((Driver) c.newInstance()); //DriverManager
+            Class c = Class.forName(_driver);
+            DriverManager.registerDriver((Driver) c.newInstance());
 
             initialized = true;
         }
@@ -124,12 +123,12 @@ public class DBConnectionMgr {
 
 
         for (int i = 0; i < connections.size(); i++) {
-            co = (ConnectionObject) connections.elementAt(i); //connection 불러오기
+            co = (ConnectionObject) connections.elementAt(i);
 
             // If connection is not in use, test to ensure it's still valid!
-            if (!co.inUse) { //사용되지 않는 경우 여전히 사용되지 않는지 확인
+            if (!co.inUse) {
                 try {
-                    badConnection = co.connection.isClosed(); //close됐는지 확인
+                    badConnection = co.connection.isClosed();
                     if (!badConnection)
                         badConnection = (co.connection.getWarnings() != null);
                 } catch (Exception e) {
@@ -139,7 +138,7 @@ public class DBConnectionMgr {
 
                 // Connection is bad, remove from pool
                 if (badConnection) {
-                    connections.removeElementAt(i); //사용되지 않았다면 제거
+                    connections.removeElementAt(i);
                     trace("ConnectionPoolManager: Remove disconnected DB connection #" + i);
                     continue;
                 }
@@ -152,10 +151,10 @@ public class DBConnectionMgr {
             }
         }
 
-        if (c == null) { //만약 객체가 없다면 생성 (맨 처음엔 항상 없음)
+        if (c == null) {
             c = createConnection();
             co = new ConnectionObject(c, true);
-            connections.addElement(co); //Vector에 추가
+            connections.addElement(co);
 
             trace("ConnectionPoolManager: Creating new DB connection #" + connections.size());
         }
@@ -165,13 +164,13 @@ public class DBConnectionMgr {
 
 
     /** Marks a flag in the ConnectionObject to indicate this connection is no longer in use */
-    public synchronized void freeConnection(Connection c) { //connection 반환
+    public synchronized void freeConnection(Connection c) {
         if (c == null)
             return;
 
         ConnectionObject co = null;
 
-        for (int i = 0; i < connections.size(); i++) { 
+        for (int i = 0; i < connections.size(); i++) {
             co = (ConnectionObject) connections.elementAt(i);
             if (c == co.connection) {
                 co.inUse = false;
@@ -186,7 +185,7 @@ public class DBConnectionMgr {
         }
     }
 
-    public void freeConnection(Connection c, PreparedStatement p, ResultSet r) { //overload
+    public void freeConnection(Connection c, PreparedStatement p, ResultSet r) {
         try {
             if (r != null) r.close();
             if (p != null) p.close();
@@ -196,7 +195,7 @@ public class DBConnectionMgr {
         }
     }
 
-    public void freeConnection(Connection c, Statement s, ResultSet r) { //overload
+    public void freeConnection(Connection c, Statement s, ResultSet r) {
         try {
             if (r != null) r.close();
             if (s != null) s.close();
@@ -206,7 +205,7 @@ public class DBConnectionMgr {
         }
     }
 
-    public void freeConnection(Connection c, PreparedStatement p) { //overload
+    public void freeConnection(Connection c, PreparedStatement p) {
         try {
             if (p != null) p.close();
             freeConnection(c);
@@ -215,7 +214,7 @@ public class DBConnectionMgr {
         }
     }
 
-    public void freeConnection(Connection c, Statement s) { //overload
+    public void freeConnection(Connection c, Statement s) {
         try {
             if (s != null) s.close();
             freeConnection(c);
@@ -233,10 +232,10 @@ public class DBConnectionMgr {
         ConnectionObject co = null;
         for (int i = 0; i < connections.size(); i++) {
             co = (ConnectionObject) connections.elementAt(i);
-            if (c == co.connection) { //삭제하려는 객체 찾아서
+            if (c == co.connection) {
                 try {
-                    c.close(); //반환후
-                    connections.removeElementAt(i); //삭제
+                    c.close();
+                    connections.removeElementAt(i);
                     trace("Removed " + c.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -248,7 +247,7 @@ public class DBConnectionMgr {
     }
 
 
-    private Connection createConnection() //Connection 생성
+    private Connection createConnection()
             throws SQLException {
         Connection con = null;
 
@@ -258,11 +257,11 @@ public class DBConnectionMgr {
             if (_password == null)
                 _password = "";
 
-            Properties props = new Properties(); //HashTable을 상속
+            Properties props = new Properties();
             props.put("user", _user);
             props.put("password", _password);
 
-            con = DriverManager.getConnection(_url, props); //DriverManager
+            con = DriverManager.getConnection(_url, props);
         } catch (Throwable t) {
             throw new SQLException(t.getMessage());
         }
@@ -278,16 +277,16 @@ public class DBConnectionMgr {
         Connection c = null;
         ConnectionObject co = null;
 
-        for (int i = 0; i < connections.size(); i++) { //connections에서
+        for (int i = 0; i < connections.size(); i++) {
             co = (ConnectionObject) connections.elementAt(i);
-            if (!co.inUse) //사용중이지 않다면
-                removeConnection(co.connection); //삭제
+            if (!co.inUse)
+                removeConnection(co.connection);
         }
     }
 
 
     /** Closes all connections and clears out the connection pool */
-    public void finalize() { //flush
+    public void finalize() {
         trace("ConnectionPoolManager.finalize()");
 
         Connection c = null;
@@ -296,31 +295,31 @@ public class DBConnectionMgr {
         for (int i = 0; i < connections.size(); i++) {
             co = (ConnectionObject) connections.elementAt(i);
             try {
-                co.connection.close(); //반환
+                co.connection.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            co = null; // set null
+            co = null;
         }
 
-        connections.removeAllElements(); //삭제
+        connections.removeAllElements();
     }
 
 
     private void trace(String s) {
         if (_traceOn)
-            System.err.println(s); //출력
+            System.err.println(s);
     }
 
 }
 
 
 class ConnectionObject {
-    public java.sql.Connection connection = null; //Connection
-    public boolean inUse = false; //inUse Flag
+    public java.sql.Connection connection = null;
+    public boolean inUse = false;
 
-    public ConnectionObject(Connection c, boolean useFlag) { //allArgumentConstructor
+    public ConnectionObject(Connection c, boolean useFlag) {
         connection = c;
         inUse = useFlag;
     }
